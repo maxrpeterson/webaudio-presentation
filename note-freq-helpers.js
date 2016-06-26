@@ -9,7 +9,7 @@
     // `['C#3', 'C#', '3']`
     let regexResult = /([A-G][b\#]?)([0-9]{1,2})/.exec(note);
 
-    if (!regexResult || regexResult.length !== 3) {
+    if (!regexResult || regexResult.length !== 3 || typeof noteNames[regexResult[1]] !== 'number') {
       throw new SyntaxError('Note checked not a valid note');
     }
 
