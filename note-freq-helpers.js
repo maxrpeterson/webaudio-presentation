@@ -27,7 +27,7 @@
     return a4Frequency * Math.pow(twelthRootOf2, halfStepDiff);
   }
 
-  if (typeof module !== 'undefined') {
+  if (typeof module === 'object') {
     module.exports = {
       noteNameToMidiNumber: noteNameToMidiNumber,
       noteNameToFrequency: noteNameToFrequency
