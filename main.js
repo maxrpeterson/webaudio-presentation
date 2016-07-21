@@ -19,7 +19,7 @@ osc1.connect(amp).connect(audioCtx.destination);
 osc1.start();
 
 // set up the QwertyHancock keyboard
-var keyboard = new QwertyHancock({
+const keyboard = new QwertyHancock({
        id: 'keyboard',
        width: 600,
        height: 150,
@@ -31,15 +31,19 @@ var keyboard = new QwertyHancock({
     });
 
 // add the keyDown listener
-keyboard.keyDown = function(note) {
-  console.log(note, noteNameToFrequency(note));
-  osc1.frequency.setValueAtTime(noteNameToFrequency(note), audioCtx.currentTime);
-  amp.gain.cancelScheduledValues(audioCtx.currentTime);
-  amp.gain.exponentialRampToValueAtTime(1, audioCtx.currentTime + 0.1);
+keyboard.keyDown = function(note, freq) {
+  let now = audioCtx.currentTime;
+  osc1.frequency.setValueAtTime(freq, now);
+  amp.gain.cancelScheduledValues(now);
+  amp.gain.setValueAtTime(0, now);
+  amp.gain.linearRampToValueAtTime(1, now + 0.3);
 };
 
 // add the keyUp listener
 keyboard.keyUp = function(note) {
-  amp.gain.cancelScheduledValues(audioCtx.currentTime);
-  amp.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2);
+  let now = audioCtx.currentTime;
+  let currAmpVal = amp.gain.value;
+  amp.gain.cancelScheduledValues(now);
+  amp.gain.setValueAtTime(currAmpVal, now);
+  amp.gain.linearRampToValueAtTime(0, now + 1);
 };
